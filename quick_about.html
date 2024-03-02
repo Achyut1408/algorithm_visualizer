@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quick Sort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(82, 71, 239, 0.262);
+            color: black;
+        }
+
+        .about_us {
+            padding: 50px;
+            text-align: center;
+            color:black;
+            padding-left: 300px;
+            padding-right: 300px;
+            font-size: 23px;
+            text-align: justify;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto; /* Center the image */
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="quick_sort.html">Quick sort</a>
+    </div>
+    <div class="about_us">
+        <p>
+            Quick sort is a popular sorting algorithm that follows the divide-and-conquer strategy. It works by selecting a pivot element from the array and partitioning the other elements into two sub-arrays according to whether they are less than or greater than the pivot. The sub-arrays are then recursively sorted. Unlike merge sort, quick sort sorts in place, requiring only a small amount of additional memory. However, its performance depends on the choice of the pivot, and in the worst-case scenario, it can have a time complexity of O(n^2). Nevertheless, on average, quick sort exhibits a time complexity of O(n log n), making it efficient for sorting large datasets.
+        </p>
+    </div>
+    <img src="Quick.jpg">
+</body>
+</html>

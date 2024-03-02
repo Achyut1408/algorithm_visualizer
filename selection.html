@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selection Sort</title>
+  <style>
+    /* Your existing styles remain unchanged */
+  </style>
+</head>
+<body>
+  <div id="navlist">
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="selection_sort.html">Selection Sort</a>
+  </div>
+  <div class="container">
+    <h2>Selection Sort</h2>
+    <label for="array">Enter Array (comma-separated):</label>
+    <input type="text" id="array" placeholder="e.g., 5, 2, 8, 1, 4">
+    <button onclick="sortArray()">Sort</button>
+    <h3>Sorted Array:</h3>
+    <p id="result"></p>
+    <button onclick="showCode()">Show Code</button>
+    <h3>Code:</h3>
+    <pre id="code"></pre>
+  </div>
+  <script>
+    function sortArray() {
+      const arrayInput = document.getElementById('array').value;
+      let array = arrayInput.split(',').map(Number);
+
+      selectionSort(array);
+
+      const sortedArray = array.join(', ');
+      document.getElementById('result').innerText = sortedArray;
+      document.getElementById('code').innerText = ''; // Clear code display
+    }
+
+    function showCode() {
+      const language = prompt('Enter the language (java or python):').toLowerCase();
+
+      if (language === 'java') {
+        displayJavaCode();
+      } else if (language === 'python') {
+        displayPythonCode();
+      } else {
+        alert('Invalid language. Please enter either "java" or "python".');
+      }
+    }
+
+    function displayJavaCode() {
+      const code = `public class SelectionSort {
+  public static void selectionSort(int[] arr) {
+    for (int i = 0; i < arr.length - 1; i++) {
+      int minIdx = i;
+      for (int j = i + 1; j < arr.length; j++) {
+        if (arr[j] < arr[minIdx]) {
+          minIdx = j;
+        }
+      }
+      if (minIdx != i) {
+        int temp = arr[i];
+        arr[i] = arr[minIdx];
+        arr[minIdx] = temp;
+      }
+    }
+  }
+}`;
+      document.getElementById('code').innerText = code;
+    }
+
+    function displayPythonCode() {
+      const code = `def selection_sort(arr):
+  for i in range(len(arr) - 1):
+    min_idx = i
+    for j in range(i + 1, len(arr)):
+      if arr[j] < arr[min_idx]:
+        min_idx = j
+    if min_idx != i:
+      arr[i], arr[min_idx] = arr[min_idx], arr[i]
+`;
+      document.getElementById('code').innerText = code;
+    }
+
+    function selectionSort(arr) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        let minIdx = i;
+        for (let j = i + 1; j < arr.length; j++) {
+          if (arr[j] < arr[minIdx]) {
+            minIdx = j;
+          }
+        }
+        if (minIdx !== i) {
+          [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+        }
+      }
+    }
+  </script>
+</body>
+</html>

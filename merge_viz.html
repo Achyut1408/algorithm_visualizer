@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sort Visualization</title>
+  <style>
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(110, 7, 123, 0.403);
+      color: black;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      width: 800px;
+      padding: 20px;
+      margin: 0 auto; /* Set margin to auto to center the container horizontally */
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      align-items: center;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: rgb(1, 4, 6);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2196F3;
+    }
+    .bars {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding-top: 80px;
+      padding-bottom: 100px;
+      margin-bottom: 20px; /* Add margin at the bottom */
+      transform: rotate(180deg);
+      margin: 0 auto; /* Center horizontally */
+      justify-content: center; /* Center bars horizontally */
+    }
+    
+    .bar {
+      width: 30px; /* Increased width of the bars */
+      margin-right: 2px;
+      background-color: rgb(0, 0, 0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative; /* Position relative for positioning the values */
+      transition: background-color 0.5s; /* Smooth color transition */
+      border: 1px solid #ccc; /* Add a border to visually distinguish bars */
+    }
+    .value-container {
+      position: absolute;
+      bottom: -20px; /* Position the value below the bar */
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+    .value {
+      font-size: 10px;
+      transform: rotate(180deg); /* Rotate the value */
+    }
+    h1{
+      text-align: center;
+    }
+    #steps {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="merge_sort.html">Merge Sort</a>
+</div>
+<br>
+<br>
+<br>
+<br>
+  <div class="container">
+    <h1>Merge Sort Visualization</h1>
+    <label for="size">Number of Inputs:</label>
+    <input type="range" id="size" min="1" max="30" value="5" oninput="updateSizeValue()">
+    <span id="sizeValue">5</span>
+    <label for="speed">Speed:</label>
+    <input type="range" id="speed" min="1" max="1000" value="500">
+    <label for="order">Sorting Order:</label>
+    <select id="order">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+    <button onclick="sort()">Sort</button>
+    <div class="bars" id="bars"></div>
+    <div id="steps"></div>
+  </div>
+
+  <script>
+    function createBars(array) {
+      return array.map((num, index) => `
+        <div class="bar" style="height:${num * 10}px;" data-key="${index}">
+          <div class="value-container">
+            <div class="value">${num}</div>
+          </div>
+        </div>`
+      ).reverse().join('');
+    }
+
+    async function mergeSort(numbers, barsDiv, stepsDiv) {
+      if (numbers.length <= 1) {
+        return numbers;
+      }
+
+      const middle = Math.floor(numbers.length / 2);
+      const left = numbers.slice(0, middle);
+      const right = numbers.slice(middle);
+
+      const leftBars = createBars(left);
+      const rightBars = createBars(right);
+
+      barsDiv.innerHTML = leftBars + rightBars;
+      stepsDiv.innerHTML += `Splitting: [${numbers}] into [${left}] and [${right}]<br>`;
+
+      await new Promise((resolve) => setTimeout(resolve, document.getElementById('speed').value));
+
+      const sortedLeft = await mergeSort(left, barsDiv, stepsDiv);
+      const sortedRight = await mergeSort(right, barsDiv, stepsDiv);
+
+      return merge(sortedLeft, sortedRight, barsDiv, stepsDiv);
+    }
+
+    async function merge(left, right, barsDiv, stepsDiv) {
+      let result = [];
+      let leftIndex = 0;
+      let rightIndex = 0;
+
+      while (leftIndex < left.length && rightIndex < right.length) {
+        if (left[leftIndex] < right[rightIndex]) {
+          result.push(left[leftIndex]);
+          leftIndex++;
+        } else {
+          result.push(right[rightIndex]);
+          rightIndex++;
+        }
+      }
+
+      result = result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+
+      barsDiv.innerHTML = createBars(result);
+      stepsDiv.innerHTML += `Merging: [${left}] and [${right}] into [${result}]<br>`;
+
+      await new Promise((resolve) => setTimeout(resolve, document.getElementById('speed').value));
+
+      return result;
+    }
+
+    async function sort() {
+      const size = document.getElementById('size').value;
+      const order = document.getElementById('order').value;
+      let numbers = Array.from({ length: size }, () => Math.floor(Math.random() * 20) + 1); // Generate random numbers
+      const barsDiv = document.getElementById('bars');
+      const stepsDiv = document.getElementById('steps');
+      barsDiv.innerHTML = createBars(numbers);
+      stepsDiv.innerHTML = '';
+
+      numbers = await mergeSort(numbers, barsDiv, stepsDiv);
+
+      if (order === 'desc') {
+        numbers.reverse();
+        barsDiv.innerHTML = createBars(numbers);
+      }
+    }
+
+    function updateSizeValue() {
+      const size = document.getElementById('size').value;
+      document.getElementById('sizeValue').textContent = size;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Puzzle Algorithm Visualization</title>
+<style>
+    table {
+        border-collapse: collapse;
+        margin: auto;
+    }
+    td {
+        border: 1px solid black;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 20px;
+        transition: all 0.5s ease;
+    }
+    .empty {
+        background-color: lightgray;
+    }
+</style>
+</head>
+<body>
+
+<h2>Enter Initial State:</h2>
+<table id="initialState">
+    <!-- Initial state will be generated dynamically -->
+</table>
+
+<h2>Enter Goal State:</h2>
+<table id="goalState">
+    <!-- Goal state will be generated dynamically -->
+</table>
+
+<button onclick="solvePuzzle()">Solve Puzzle</button>
+
+<table id="currentState">
+    <!-- Intermediate states will be displayed dynamically -->
+</table>
+
+<script>
+function createTable(id, state) {
+    var table = document.getElementById(id);
+    table.innerHTML = "";
+    for (var i = 0; i < 4; i++) {
+        var row = document.createElement("tr");
+        for (var j = 0; j < 4; j++) {
+            var cell = document.createElement("td");
+            if (state[i][j] === 0) {
+                cell.className = "empty";
+                cell.textContent = "";
+            } else {
+                cell.textContent = state[i][j];
+            }
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+}
+
+function solvePuzzle() {
+    var initialState = getUserInput("initialState");
+    var goalState = getUserInput("goalState");
+
+    createTable("initialState", initialState);
+
+    var moves = solve(initialState, goalState);
+    animateMoves(moves);
+}
+
+function getUserInput(id) {
+    var table = document.getElementById(id);
+    var state = [];
+    for (var i = 0; i < 4; i++) {
+        state.push([]);
+        for (var j = 0; j < 4; j++) {
+            var input = prompt("Enter value for row " + (i + 1) + ", column " + (j + 1));
+            state[i].push(parseInt(input));
+        }
+    }
+    return state;
+}
+
+function solve(initialState, goalState) {
+    // Placeholder function for solving algorithm
+    // You should implement a proper solving algorithm here
+    // For demonstration, just return an array of states
+    var states = [initialState]; // Start with initial state
+    // Here you should implement the solving algorithm to generate intermediate states
+    // For demonstration, let's just generate a few random intermediate states
+    for (var i = 0; i < 5; i++) {
+        // Generate a random intermediate state (just for demonstration)
+        var intermediateState = generateRandomState();
+        states.push(intermediateState);
+    }
+    states.push(goalState); // Add goal state
+    return states;
+}
+
+function generateRandomState() {
+    // Placeholder function to generate a random state (for demonstration)
+    // You should implement a proper state generation function
+    var state = [];
+    var nums = [];
+    for (var i = 1; i <= 15; i++) {
+        nums.push(i);
+    }
+    nums.push(0); // Add empty cell
+    for (var i = 0; i < 4; i++) {
+        state.push([]);
+        for (var j = 0; j < 4; j++) {
+            var randomIndex = Math.floor(Math.random() * nums.length);
+            state[i].push(nums[randomIndex]);
+            nums.splice(randomIndex, 1);
+        }
+    }
+    return state;
+}
+
+function animateMoves(states) {
+    var index = 0;
+    var interval = setInterval(function() {
+        if (index < states.length - 1) {
+            var moveDescription = getMoveDescription(states[index], states[index + 1]);
+            document.getElementById("currentState").innerHTML = moveDescription;
+            createTable("currentState", states[index]);
+            index++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 1000); // Adjust animation speed as needed
+}
+
+function getMoveDescription(currentState, nextState) {
+    var moveDescription = "<tr><td colspan='4'><strong>Move:</strong></td></tr>";
+    for (var i = 0; i < 4; i++) {
+        for (var j = 0; j < 4; j++) {
+            if (currentState[i][j] !== nextState[i][j]) {
+                var from = currentState[i][j] === 0 ? "empty" : currentState[i][j];
+                var to = nextState[i][j] === 0 ? "empty" : nextState[i][j];
+                moveDescription += "<tr><td>Move " + from + " to " + to + "</td></tr>";
+            }
+        }
+    }
+    return moveDescription;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #81df7d;
+        }
+
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(199, 218, 36, 0.427);
+            color: black;
+        }
+
+        .about_us {
+            padding: 50px;
+            text-align: center;
+            color:black;
+            padding-left: 300px;
+            padding-right: 300px;
+            font-size: 23px;
+            text-align: justify;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+            align-items: center;
+            margin-left: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="dijistra_s.html">Dijistra Algorithm</a>
+    </div>
+    <div class="about_us">
+        <p>
+            Dijkstra's algorithm is a widely used method in computer science for finding the shortest path between nodes in a graph with non-negative edge weights. It begins at a designated source node and iteratively explores neighboring nodes, updating tentative distances to each node based on the shortest path found so far. This process continues until all nodes have been visited or the destination node has been reached. Using priority queues or heaps for efficient node selection, Dijkstra's algorithm guarantees finding the shortest path from the source node to all other nodes in the graph, provided there are no negative edge weights. After completion, the shortest path can be reconstructed by backtracking through nodes with the smallest tentative distances.
+        </p>
+    </div>
+    <div class="image-container">
+        <img src="dijistra.jpg">
+        Output: 0 4 12 19 21 11 9 8 14
+Explanation: The distance from 0 to 1 = 4.<br>
+The minimum distance from 0 to 2 = 12. 0->1->2.<br>
+The minimum distance from 0 to 3 = 19. 0->1->2->3.<br>
+The minimum distance from 0 to 4 = 21. 0->7->6->5->4.<br>
+The minimum distance from 0 to 5 = 11. 0->7->6->5.<br>
+The minimum distance from 0 to 6 = 9. 0->7->6.<br>
+The minimum distance from 0 to 7 = 8. 0->7.<br>
+The minimum distance from 0 to 8 = 14. 0->1->2->8.<br>
+    </div>
+</body>
+</html>

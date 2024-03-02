@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knapsack Problem Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: rgb(1, 4, 6);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2196F3;
+        }
+
+        #visualization {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 80px;
+            padding-bottom: 100px;
+            margin-bottom: 20px;
+            transform: rotate(180deg);
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .item {
+            width: 30px;
+            margin-right: 2px;
+            background-color: rgb(0, 0, 0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: background-color 0.5s;
+            border: 1px solid #ccc;
+        }
+
+        .item-value-container {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .item-value {
+            font-size: 10px;
+            transform: rotate(180deg);
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Knapsack Problem Visualization</h1>
+        <div>
+            <label for="capacity">Knapsack Capacity:</label>
+            <input type="number" id="capacity" value="10">
+        </div>
+        <div id="itemsInput">
+            <label for="numItems">Number of Items:</label>
+            <input type="number" id="numItems" value="5">
+        </div>
+        <div id="itemInputs">
+            <!-- Item inputs will be dynamically added here -->
+        </div>
+        <div>
+            <label for="knapsackType">Knapsack Type:</label>
+            <select id="knapsackType">
+                <option value="0-1">0/1 Knapsack</option>
+                <option value="fractional">Fractional Knapsack</option>
+            </select>
+        </div>
+        <button onclick="addItems()">Add Items</button>
+        <button onclick="calculate()">Calculate</button>
+        <div id="visualization"></div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function addItems() {
+            const numItems = parseInt(document.getElementById("numItems").value);
+            const itemInputs = document.getElementById("itemInputs");
+            itemInputs.innerHTML = "";
+
+            for (let i = 1; i <= numItems; i++) {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <label for="item${i}-name">Item ${i} Name:</label>
+                    <input type="text" id="item${i}-name" placeholder="Item ${i}">
+                    <label for="item${i}-weight">Item ${i} Weight:</label>
+                    <input type="number" id="item${i}-weight" placeholder="Weight">
+                    <label for="item${i}-profit">Item ${i} Profit:</label>
+                    <input type="number" id="item${i}-profit" placeholder="Profit">
+                `;
+                itemInputs.appendChild(div);
+            }
+        }
+
+        function calculate() {
+            const capacity = parseInt(document.getElementById("capacity").value);
+            const itemInputs = document.getElementById("itemInputs");
+            const items = [];
+
+            // Collect item data from inputs
+            for (let i = 1; i <= itemInputs.children.length; i++) {
+                const name = document.getElementById(`item${i}-name`).value;
+                const weight = parseInt(document.getElementById(`item${i}-weight`).value);
+                const profit = parseInt(document.getElementById(`item${i}-profit`).value);
+
+                if (name && !isNaN(weight) && !isNaN(profit)) {
+                    items.push({ name, weight, profit });
+                }
+            }
+
+            // Knapsack algorithm implementation
+            const knapsackType = document.getElementById("knapsackType").value;
+            if (knapsackType === "0-1") {
+                // 0/1 Knapsack algorithm
+                // Implementation for 0/1 Knapsack...
+            } else if (knapsackType === "fractional") {
+                // Fractional Knapsack algorithm
+                items.sort((a, b) => b.profit / b.weight - a.profit / a.weight);
+
+                let selectedItems = [];
+                let currentWeight = 0;
+                let currentProfit = 0;
+
+                for (let i = 0; i < items.length; i++) {
+                    if (currentWeight + items[i].weight <= capacity) {
+                        selectedItems.push(items[i]);
+                        currentWeight += items[i].weight;
+                        currentProfit += items[i].profit;
+                    } else {
+                        const remainingWeight = capacity - currentWeight;
+                        const fraction = remainingWeight / items[i].weight;
+                        selectedItems.push({
+                            name: items[i].name,
+                            weight: remainingWeight,
+                            profit: Math.round(fraction * items[i].profit)
+                        });
+                        currentProfit += Math.round(fraction * items[i].profit);
+                        // Remove the break statement to use the complete knapsack capacity
+                        // break;
+                    }
+                }
+
+                const visualization = document.getElementById("visualization");
+                visualization.innerHTML = "";
+                selectedItems.forEach(item => {
+                    const bar = document.createElement("div");
+                    bar.classList.add("item");
+                    bar.style.height = `${item.profit * 10}px`;
+                    bar.innerHTML = `
+                        <div class="item-value-container">
+                            <div class="item-value">${item.name}\n$${item.profit}</div>
+                        </div>
+                    `;
+                    visualization.appendChild(bar);
+                });
+
+                const output = document.getElementById("output");
+                output.innerHTML = `
+                    <h3>Selected Items:</h3>
+                    <ul>
+                        ${selectedItems.map(item => `<li>${item.name} - $${item.profit}</li>`).join("")}
+                    </ul>
+                    <p>Total Profit: $${currentProfit}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

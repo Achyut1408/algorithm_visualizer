@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Naive String</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #9ceee6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(113, 30, 230, 0.262);
+            color: black;
+        }
+
+        .about_us {
+            padding: 50px;
+            text-align: center;
+            color:black;
+            padding-left: 300px;
+            padding-right: 300px;
+            font-size: 23px;
+            text-align: justify;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto; /* Center the image */
+            max-width: 100%;
+            height: auto;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="naive_str.html">Naive String</a>
+    </div>
+    <div class="about_us">
+        <p>
+            Naive string matching, also known as brute-force string matching, is a simple pattern matching algorithm that checks for the occurrence of a pattern within a text by sliding the pattern over the text one character at a time and comparing each character. It is called "naive" because it does not use any sophisticated data structures or algorithms to improve its efficiency.
+            <br>
+            <br>
+The naive string matching algorithm has a time complexity of O(m * n), where m is the length of the pattern and n is the length of the text. This means that in the worst case, it may have to examine every character in the text for each position of the pattern, making it inefficient for large texts or patterns.
+<br>
+<br>
+Despite its simplicity and inefficiency for large datasets, the naive string matching algorithm serves as a foundational concept in string matching algorithms and is often used as a reference for comparing the performance of more advanced algorithms.
+        </p>
+    </div>
+    <img src="naive.jpg">
+</body>
+</html>

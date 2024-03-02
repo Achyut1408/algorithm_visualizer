@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>String Matching Algorithms</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        #navlist {
+            background-color: #00147700;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float: left;
+            display: block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .navlist-right {
+            float: right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(160, 123, 43, 0.262);
+            color: rgb(58, 54, 54);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #dbb1b1;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #0d117e;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+            animation: buttonAnimation 1s infinite alternate;
+        }
+
+        .button:hover {
+            background-color: #2f1253;
+            animation-play-state: paused;
+        }
+
+        @keyframes buttonAnimation {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+    </div>
+    <br><br><br><br><br><br>
+    <h1>String Matching Algorithms</h1>
+    <div class="button-container">
+        <a href="naive_str.html" class="button">Naive String Algorithm</a>
+        <a href="kmp_str.html" class="button">Knuth-Morris-Pratt Algorithm</a>
+    </div>
+</body>
+</html>

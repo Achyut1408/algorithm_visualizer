@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstra's Algorithm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            resize: none;
+        }
+        .code-container {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dijkstra's Algorithm</h1>
+    <h2>Select a language:</h2>
+    <form id="languageForm">
+        <label>
+            <input type="radio" name="language" value="python" checked> Python
+        </label>
+        <label>
+            <input type="radio" name="language" value="java"> Java
+        </label>
+    </form>
+    <div id="pythonCode" class="code-container">
+        <h2>Python Code:</h2>
+        <textarea readonly>
+import sys
+
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = [[0 for _ in range(vertices)] for _ in range(vertices)]
+
+    def min_distance(self, dist, visited):
+        min_dist = sys.maxsize
+        min_index = -1
+        for v in range(self.V):
+            if dist[v] < min_dist and not visited[v]:
+                min_dist = dist[v]
+                min_index = v
+        return min_index
+
+    def dijkstra(self, src):
+        dist = [sys.maxsize] * self.V
+        dist[src] = 0
+        visited = [False] * self.V
+
+        for _ in range(self.V):
+            u = self.min_distance(dist, visited)
+            visited[u] = True
+
+            for v in range(self.V):
+                if self.graph[u][v] > 0 and not visited[v] and dist[v] > dist[u] + self.graph[u][v]:
+                    dist[v] = dist[u] + self.graph[u][v]
+
+        return dist
+
+# Example usage
+def main():
+    vertices = int(input("Enter the number of vertices: "))
+    g = Graph(vertices)
+
+    print("Enter the adjacency matrix:")
+    for i in range(vertices):
+        g.graph[i] = list(map(int, input().split()))
+
+    src = int(input("Enter the source vertex: "))
+    dist = g.dijkstra(src)
+
+    print("Shortest distances from source:")
+    for i in range(vertices):
+        print("Vertex", i, ":", dist[i])
+
+if __name__ == "__main__":
+    main()
+        </textarea>
+    </div>
+    <div id="javaCode" class="code-container">
+        <h2>Java Code:</h2>
+        <textarea readonly>
+import java.util.*;
+
+class DijkstraAlgorithm {
+    static final int MAX = 10005;
+    static final int INF = Integer.MAX_VALUE;
+
+    static class Node implements Comparable<Node> {
+        int vertex, weight;
+
+        Node(int vertex, int weight) {
+            this.vertex = vertex;
+            this.weight = weight;
+        }
+
+        public int compareTo(Node other) {
+            return Integer.compare(this.weight, other.weight);
+        }
+    }
+
+    static void dijkstra(ArrayList<ArrayList<Node>> graph, int src, int[] dist) {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(src, 0));
+        dist[src] = 0;
+
+        while (!pq.isEmpty()) {
+            int u = pq.poll().vertex;
+
+            for (Node neighbor : graph.get(u)) {
+                if (dist[u] + neighbor.weight < dist[neighbor.vertex]) {
+                    dist[neighbor.vertex] = dist[u] + neighbor.weight;
+                    pq.add(new Node(neighbor.vertex, dist[neighbor.vertex]));
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of vertices: ");
+        int V = scanner.nextInt();
+        ArrayList<ArrayList<Node>> graph = new ArrayList<>(V);
+        for (int i = 0; i < V; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        System.out.println("Enter the adjacency matrix:");
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                int weight = scanner.nextInt();
+                if (weight != 0) {
+                    graph.get(i).add(new Node(j, weight));
+                }
+            }
+        }
+
+        System.out.print("Enter the source vertex: ");
+        int src = scanner.nextInt();
+
+        int[] dist = new int[V];
+        Arrays.fill(dist, INF);
+
+        dijkstra(graph, src, dist);
+
+        System.out.println("Shortest distances from source:");
+        for (int i = 0; i < V; i++) {
+            System.out.println("Vertex " + i + ": " + dist[i]);
+        }
+    }
+}
+        </textarea>
+    </div>
+
+    <script>
+        const codeContainers = document.querySelectorAll('.code-container');
+        const languageForm = document.getElementById('languageForm');
+
+        function updateCodeDisplay(language) {
+            codeContainers.forEach(container => {
+                container.style.display = 'none';
+            });
+
+            const selectedCodeContainer = document.getElementById(language + 'Code');
+            selectedCodeContainer.style.display = 'block';
+        }
+
+        languageForm.addEventListener('change', (event) => {
+            updateCodeDisplay(event.target.value);
+        });
+
+        // Initial display
+        updateCodeDisplay('python'); // Default to Python
+    </script>
+</body>
+</html>

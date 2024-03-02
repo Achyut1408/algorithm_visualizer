@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sort Visualization</title>
+  <style>
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      width: 800px;
+      padding: 20px;
+      margin: auto; /* Center the container horizontally and vertically */
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      align-items: center;
+      text-align: center;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: rgb(1, 4, 6);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2196F3;
+    }
+    .bars {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding-top: 80px;
+      padding-bottom: 100px;
+      margin-bottom: 20px; /* Add margin at the bottom */
+      transform: rotate(180deg);
+      margin: 0 auto; /* Center horizontally */
+      justify-content: center; /* Center bars horizontally */
+    }
+    
+    .bar {
+      width: 30px; /* Increased width of the bars */
+      margin-right: 2px;
+      background-color: rgb(0, 0, 0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative; /* Position relative for positioning the values */
+      transition: background-color 0.5s; /* Smooth color transition */
+      border: 1px solid #ccc; /* Add a border to visually distinguish bars */
+    }
+    .value-container {
+      position: absolute;
+      bottom: -20px; /* Position the value below the bar */
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+    .value {
+      font-size: 10px;
+      transform: rotate(180deg); /* Rotate the value */
+    }
+    h1{
+      text-align: center;
+    }
+    .slider-value {
+      font-size: 12px;
+      margin-left: 5px;
+    }
+    .inputs {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+    .input-group label {
+      margin-right: 5px;
+    }
+    .input-group input {
+      margin-right: 10px;
+    }
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+    #steps {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="bubble_sort.html">Bubble Sort</a>
+</div>
+<br>
+<br>
+<br>
+  <div class="container">
+    <h1>Bubble Sort Vizualization</h1>
+    <div class="inputs">
+      <div class="input-group">
+        <label for="size">Number of Inputs:</label>
+        <input type="range" id="size" min="1" max="30" value="5" oninput="updateSliderValue('size', 'sizeValue')">
+        <span id="sizeValue" class="slider-value">5</span>
+      </div>
+      <div class="input-group">
+        <label for="speed">Speed:</label>
+        <input type="range" id="speed" min="1" max="1000" value="500" oninput="updateSliderValue('speed', 'speedValue')">
+        <span id="speedValue" class="slider-value">500</span>
+      </div>
+      <div class="input-group">
+        <label for="order">Sorting Order:</label>
+        <select id="order">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </div>
+    </div>
+    <div class="button-container">
+      <button onclick="sort()">Sort</button>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div id="steps"></div>
+  </div>
+
+  <script>
+    function createBars(array) {
+      return array.map((num, index) => `
+        <div class="bar" style="height:${num * 10}px;" data-key="${index}">
+          <div class="value-container">
+            <div class="value">${num}</div>
+          </div>
+        </div>`
+      ).reverse().join('');
+    }
+
+    async function sort() {
+      const size = document.getElementById('size').value;
+      const order = document.getElementById('order').value;
+      let numbers = Array.from({ length: size }, () => Math.floor(Math.random() * 20) + 1); // Generate random numbers
+      const barsDiv = document.getElementById('bars');
+      const stepsDiv = document.getElementById('steps');
+      barsDiv.innerHTML = createBars(numbers);
+      stepsDiv.innerHTML = '';
+
+      let stepNumber = 1; // Initialize step number
+
+      for (let i = 0; i < numbers.length; i++) {
+        for (let j = 0; j < numbers.length - 1 - i; j++) {
+          if ((order === 'asc' && numbers[j] > numbers[j + 1]) || (order === 'desc' && numbers[j] < numbers[j + 1])) {
+            let temp = numbers[j];
+            numbers[j] = numbers[j + 1];
+            numbers[j + 1] = temp;
+
+            barsDiv.innerHTML = createBars(numbers);
+
+            // Change the color of the bars
+            document.querySelectorAll('.bar')[j].style.backgroundColor = 'darkblue';
+            document.querySelectorAll('.bar')[j + 1].style.backgroundColor = 'darkblue';
+
+            // Delay based on the speed slider value
+            const speed = document.getElementById('speed').value;
+            await new Promise((resolve) => setTimeout(resolve, speed));
+
+            // Reset the color after the delay
+            document.querySelectorAll('.bar')[j].style.backgroundColor = 'black';
+            document.querySelectorAll('.bar')[j + 1].style.backgroundColor = 'black';
+
+            // Display steps with serial step number
+            stepsDiv.innerHTML += `<div>Step ${stepNumber++}: Swapped ${numbers[j]} and ${numbers[j + 1]}</div>`;
+          }
+        }
+      }
+    }
+
+    function updateSliderValue(sliderId, displayId) {
+      document.getElementById(displayId).textContent = document.getElementById(sliderId).value;
+    }
+  </script>
+</body>
+</html>

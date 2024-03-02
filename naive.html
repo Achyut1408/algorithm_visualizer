@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naive String Matching</title>
+    <style>
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(82, 71, 239, 0.262);
+            color: black;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .container {
+            width: 800px;
+            padding: 20px;
+            margin: auto; /* Center the container horizontally and vertically */
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            text-align: center;
+          }
+          
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="naive_str.html">Naive String</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <h2>Chooze your languague</h2>
+        <button onclick="showPythonCode()">Python Code</button>
+        <button onclick="showJavaCode()">Java Code</button>
+        <div id="pythonCode" style="display: none;">
+            <pre><code>def naive_string_matching(text, pattern):
+    n = len(text)
+    m = len(pattern)
+    positions = []
+
+    for i in range(n - m + 1):
+        j = 0
+        while j < m:
+            if text[i + j] != pattern[j]:
+                break
+            j += 1
+        if j == m:
+            positions.append(i)
+
+    return positions
+
+text = input("Enter the text: ")
+pattern = input("Enter the pattern to search: ")
+
+positions = naive_string_matching(text, pattern)
+
+if positions:
+    print(f"Pattern found at positions: {positions}")
+else:
+    print("Pattern not found in the text.")</code></pre>
+        </div>
+        <div id="javaCode" style="display: none;">
+            <pre><code>import java.util.ArrayList;
+
+public class NaiveStringMatching {
+    public static ArrayList<Integer> naiveStringMatching(String text, String pattern) {
+        int n = text.length();
+        int m = pattern.length();
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        for (int i = 0; i &lt;= n - m; i++) {
+            int j;
+            for (j = 0; j &lt; m; j++) {
+                if (text.charAt(i + j) != pattern.charAt(j))
+                    break;
+            }
+            if (j == m)
+                positions.add(i);
+        }
+
+        return positions;
+    }
+
+    public static void main(String[] args) {
+        String text = System.console().readLine("Enter the text: ");
+        String pattern = System.console().readLine("Enter the pattern to search: ");
+
+        ArrayList<Integer> positions = naiveStringMatching(text, pattern);
+
+        if (!positions.isEmpty()) {
+            System.out.println("Pattern found at positions: " + positions);
+        } else {
+            System.out.println("Pattern not found in the text.");
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+    <script>
+        function showPythonCode() {
+            document.getElementById('pythonCode').style.display = 'block';
+            document.getElementById('javaCode').style.display = 'none';
+        }
+
+        function showJavaCode() {
+            document.getElementById('pythonCode').style.display = 'none';
+            document.getElementById('javaCode').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

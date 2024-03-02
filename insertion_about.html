@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body{
+                background-color: rgba(186, 155, 235, 0.893);
+            }
+            #navlist {
+                background-color: #d3d7da00;
+                position: absolute;
+                width: 100%;
+                margin-top: -10px;
+                
+            }
+            /* styling navlist anchor element */
+            #navlist a {
+                float:left;
+                display:block;
+                color: #262424;
+                text-align: center;
+                padding: 12px;
+                text-decoration:none;
+                font-size: 20px;
+            }
+            .navlist-right{
+                float:right;
+            }
+            #navlist a:hover {
+                background-color: rgba(232, 121, 107, 0.381);
+                color: black;
+            }
+            .about_us {
+                padding: 50px;
+                text-align: center;
+                color:black;
+                padding-left: 300px;
+                padding-right: 300px;
+                font-size: 23px;
+                text-align: justify;
+              }
+              img {
+                display: block;
+                margin: 20px auto; /* Center the image */
+                max-width: 100%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="navlist" >
+            <a href="index.html">Algorithm Visualizer</a>
+            <a href="insertion_sort.html">Insertion Sort</a>
+        </div>
+        <div class="about_us">
+            <p>
+                Insertion sort is a simple sorting algorithm that builds the final sorted array one item at a time. It iterates through the input array, comparing each element with the elements to its left, and inserts it into its correct position in the sorted array. The algorithm is efficient for small data sets but becomes inefficient for larger data sets due to its O(n^2) time complexity in the worst case. However, it has several advantages, including simplicity, adaptive behavior, and stability, making it useful in certain scenarios.
+            </p>
+        </div>
+        <img src="insertion.png">
+    </body>
+</html>

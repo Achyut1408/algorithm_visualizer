@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bubble Sort</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      display: flex; /* Use flexbox for layout */
+      flex-direction: column; /* Arrange children in a column */
+      align-items: center; /* Center items horizontally */
+      justify-content: center; /* Center items vertically */
+      width: 800px;
+      padding: 20px;
+      margin: auto; /* Center the container horizontally and vertically */
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      flex-grow: 1; /* Allow the code block to grow and take up remaining space */
+    }
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="bubble_sort.html">Bubble Sort</a>
+</div>
+<br>
+<br>
+<br>
+  <div class="container">
+    <h2>Bubble Sort</h2>
+    <label for="array">Enter Array (comma-separated):</label>
+    <input type="text" id="array" placeholder="e.g., 5, 2, 8, 1, 4">
+    <label for="order">Select Order:</label>
+    <select id="order">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+    <label for="language">Select Language:</label>
+    <input type="radio" id="python" name="language" value="python" checked>
+    <label for="python">Python</label>
+    <input type="radio" id="java" name="language" value="java">
+    <label for="java">Java</label>
+    <button onclick="sortArray()">Sort</button>
+    <div style="display: flex; width: 100%">
+      <div style="width: 50%">
+        <h3>Sorted Array:</h3>
+        <p id="result"></p>
+      </div>
+      <div style="width: 50%">
+        <h3>Code:</h3>
+        <pre id="code"></pre>
+      </div>
+    </div>
+  </div>
+  <script>
+    function bubbleSort(arr) {
+      let n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+            let temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      return arr;
+    }
+
+    function sortArray() {
+      const arrayInput = document.getElementById('array').value;
+      const order = document.getElementById('order').value;
+      const language = document.querySelector('input[name="language"]:checked').value;
+      let array = arrayInput.split(',').map(Number);
+      let code = '';
+      let userCode = '';
+
+      if (order === 'asc') {
+        array = bubbleSort(array);
+      } else {
+        array = bubbleSortDesc(array);
+      }
+
+      if (language === 'python') {
+        if (order === 'asc') {
+          code = `def bubble_sort_asc(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Example usage
+array = [${arrayInput}]
+print(bubble_sort_asc(array.copy()))`;
+          userCode = `def bubble_sort_asc(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr`;
+        } else {
+          code = `def bubble_sort_desc(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] < arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Example usage
+array = [${arrayInput}]
+print(bubble_sort_desc(array.copy()))`;
+          userCode = `def bubble_sort_desc(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] < arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr`;
+        }
+      } else {
+        if (order === 'asc') {
+          code = `public class BubbleSort {
+    public static void bubbleSortAsc(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] array = {${arrayInput}};
+        bubbleSortAsc(array);
+        for (int num : array) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}`;
+          userCode = `public class BubbleSort {
+    public static void bubbleSortAsc(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }`;
+        } else {
+          code = `public class BubbleSort {
+    public static void bubbleSortDesc(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] < arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] array = {${arrayInput}};
+        bubbleSortDesc(array);
+        for (int num : array) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}`;
+          userCode = `public class BubbleSort {
+    public static void bubbleSortDesc(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] < arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }`;
+        }
+      }
+
+      document.getElementById('result').innerText = array.join(', ');
+      document.getElementById('code').innerText = code + '\n\nUser Input:\n' + userCode;
+    }
+
+    function bubbleSortDesc(arr) {
+      let n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          if (arr[j] < arr[j + 1]) {
+            let temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      return arr;
+    }
+  </script>
+</body>
+</html>

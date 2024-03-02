@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KMP String Matching Visualization</title>
+  <style>
+    span.matched {
+      color: blue;
+      font-weight: bold;
+    }
+    #matchNotFound {
+      font-weight: bold;
+      color: red;
+    }
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="index.html">Knuth-Morris-Pratt</a>
+</div>
+<br>
+<br>
+<br>
+<h2>KMP String Matching Visualization</h2>
+
+<button onclick="generateRandomString()">Generate Random String</button><br>
+<button onclick="getUserInput()">Enter User Input</button><br>
+
+<div id="randomStringOutput"></div>
+<div id="userInputOutput"></div>
+<div id="visualizationOutput"></div>
+<div id="matchNotFound"></div>
+
+<script>
+let randomString = '';
+let userInput = '';
+
+function generateRandomString() {
+  randomString = Array.from({ length: 20 }, () => String.fromCharCode(Math.floor(Math.random() * 26) + 97)).join('');
+  document.getElementById('randomStringOutput').innerHTML = 'Random String: ' + randomString;
+  clearVisualization();
+  clearUserInput();
+}
+
+function getUserInput() {
+  userInput = prompt('Enter a string for matching:');
+  document.getElementById('userInputOutput').innerHTML = 'User Input: ' + userInput;
+
+  visualizeStringMatching();
+}
+
+function visualizeStringMatching() {
+  const matches = kmpStringMatch(randomString, userInput);
+  const visualizationOutput = document.getElementById('visualizationOutput');
+  const matchNotFoundOutput = document.getElementById('matchNotFound');
+
+  if (matches.length > 0) {
+    // Visualize matches
+    let visualization = '';
+    for (let i = 0; i < randomString.length; i++) {
+      const isMatched = matches.includes(i);
+      const character = randomString[i];
+      
+      if (isMatched) {
+        visualization += `<span class="matched">${i}</span> `;
+      }
+    }
+
+    visualizationOutput.innerHTML = 'Positions of Matches: ' + visualization;
+    matchNotFoundOutput.innerText = '';
+  } else {
+    matchNotFoundOutput.innerHTML = '<h3>No Match Found</h3>';
+    visualizationOutput.innerHTML = '';
+  }
+}
+
+function kmpStringMatch(text, pattern) {
+  const matches = [];
+  const n = text.length;
+  const m = pattern.length;
+
+  let i = 0; // Index for the text
+  let j = 0; // Index for the pattern
+
+  while (i < n) {
+    if (text[i] === pattern[j]) {
+      // If characters match, move to the next character in both text and pattern
+      i++;
+      j++;
+
+      if (j === m) {
+        // Match found, record the starting position
+        matches.push(i - j);
+        j = 0; // Reset the pattern index to continue searching
+      }
+    } else {
+      if (j !== 0) {
+        // If there is a mismatch and we are not at the beginning of the pattern,
+        // reset the pattern index to continue searching from the current position
+        j = 0;
+      } else {
+        // If there is a mismatch and we are at the beginning of the pattern,
+        // move to the next character in the text
+        i++;
+      }
+    }
+  }
+
+  return matches;
+}
+
+function clearVisualization() {
+  const visualizationOutput = document.getElementById('visualizationOutput');
+  visualizationOutput.innerHTML = '';
+}
+
+function clearUserInput() {
+  document.getElementById('userInputOutput').innerHTML = 'User Input: ';
+  // Clear the "No Match Found" message when generating a new random string
+  document.getElementById('matchNotFound').innerText = '';
+}
+</script>
+
+</body>
+</html>

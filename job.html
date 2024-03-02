@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Sequencing Algorithm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        pre {
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(79, 148, 232, 0.49);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="job_sequencing.html">Job Sequencing</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <h2>Select a language:</h2>
+        <button onclick="showPython()">Python</button>
+        <button onclick="showJava()">Java</button>
+        <div id="code"></div>
+    </div>
+
+    <script>
+        function showPython() {
+            document.getElementById('code').innerHTML = `<pre><code>${pythonCode}</code></pre>`;
+        }
+
+        function showJava() {
+            document.getElementById('code').innerHTML = `<pre><code>${javaCode}</code></pre>`;
+        }
+
+        const pythonCode = `
+def job_sequencing(jobs, available_time):
+    jobs.sort(key=lambda x: x[1], reverse=True)  # Sort jobs by profit in descending order
+    schedule = [-1] * available_time
+    total_profit = 0
+
+    for job in jobs:
+        deadline = job[2] - 1
+        while deadline >= 0:
+            if schedule[deadline] == -1:
+                schedule[deadline] = job[0]
+                total_profit += job[1]
+                break
+            deadline -= 1
+
+    return schedule, total_profit
+
+# Example usage:
+if __name__ == "__main__":
+    n = int(input("Enter the number of jobs: "))
+    jobs = []
+    for i in range(n):
+        name = input(f"Enter job {i+1} name: ")
+        profit = int(input(f"Enter profit for job {name}: "))
+        time = int(input(f"Enter time taken for job {name}: "))
+        deadline = int(input(f"Enter deadline for job {name}: "))
+        jobs.append((name, profit, deadline, time))
+    
+    available_time = int(input("Enter the available time: "))
+    
+    schedule, total_profit = job_sequencing(jobs, available_time)
+    print("Schedule:", schedule)
+    print("Total Profit:", total_profit)
+`;
+
+        const javaCode = `
+import java.util.*;
+
+class Job {
+    String name;
+    int profit;
+    int deadline;
+    int time;
+
+    public Job(String name, int profit, int deadline, int time) {
+        this.name = name;
+        this.profit = profit;
+        this.deadline = deadline;
+        this.time = time;
+    }
+}
+
+class JobSequencingAlgorithm {
+    public static void jobSequencing(Job[] jobs, int availableTime) {
+        Arrays.sort(jobs, (a, b) -> b.profit - a.profit); // Sort jobs by profit in descending order
+        int[] schedule = new int[availableTime];
+        Arrays.fill(schedule, -1);
+        int totalProfit = 0;
+
+        for (Job job : jobs) {
+            int deadline = job.deadline - 1;
+            while (deadline >= 0) {
+                if (schedule[deadline] == -1) {
+                    schedule[deadline] = job.profit;
+                    totalProfit += job.profit;
+                    break;
+                }
+                deadline--;
+            }
+        }
+
+        System.out.println("Schedule: " + Arrays.toString(schedule));
+        System.out.println("Total Profit: " + totalProfit);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of jobs: ");
+        int n = scanner.nextInt();
+        Job[] jobs = new Job[n];
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter job name: ");
+            String name = scanner.next();
+            System.out.print("Enter profit for job " + name + ": ");
+            int profit = scanner.nextInt();
+            System.out.print("Enter time taken for job " + name + ": ");
+            int time = scanner.nextInt();
+            System.out.print("Enter deadline for job " + name + ": ");
+            int deadline = scanner.nextInt();
+            jobs[i] = new Job(name, profit, deadline, time);
+        }
+
+        System.out.print("Enter available time: ");
+        int availableTime = scanner.nextInt();
+        jobSequencing(jobs, availableTime);
+        scanner.close();
+    }
+}
+`;
+    </script>
+</body>
+</html>

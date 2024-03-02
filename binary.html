@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Binary Search</title>
+  <style>
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      justify-content: center;
+      align-content: center;
+      width: 800px;
+      padding: 20px;
+      margin-left: 300px;
+      background-color: #fff;
+      border-radius: 5px;
+      border-radius: 5%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="binary_search.html">Binary Search</a>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <h2>Binary Search</h2>
+    <label for="array">Enter Sorted Array (comma-separated):</label>
+    <input type="text" id="array" placeholder="e.g., 1, 2, 3, 4, 5">
+    <label for="searchValue">Enter Value to Search:</label>
+    <input type="number" id="searchValue" min="1" max="100" step="1">
+    <label for="language">Select Language:</label>
+    <input type="radio" id="python" name="language" value="python" checked>
+    <label for="python">Python</label>
+    <input type="radio" id="java" name="language" value="java">
+    <label for="java">Java</label>
+    <button onclick="binarySearch()">Search</button>
+    <h3>Result:</h3>
+    <p id="result"></p>
+    <h3>Code:</h3>
+    <pre id="code"></pre>
+  </div>
+  <script>
+    function binarySearch() {
+      const arrayInput = document.getElementById('array').value;
+      const searchValue = parseInt(document.getElementById('searchValue').value);
+      const language = document.querySelector('input[name="language"]:checked').value;
+      let array = arrayInput.split(',').map(Number);
+      let code = '';
+      let userCode = '';
+
+      function binary_search(arr, x) {
+        let low = 0;
+        let high = arr.length - 1;
+        while (low <= high) {
+          let mid = Math.floor((low + high) / 2);
+          if (arr[mid] === x) return mid;
+          else if (arr[mid] < x) low = mid + 1;
+          else high = mid - 1;
+        }
+        return -1;
+      }
+
+      if (language === 'python') {
+        code = `def binary_search(arr, x):
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] < x:
+            low = mid + 1
+        elif arr[mid] > x:
+            high = mid - 1
+        else:
+            return mid
+    return -1
+
+# Example usage
+array = [${arrayInput}]
+x = ${searchValue}
+result = binary_search(array, x)
+if result != -1:
+    print("Element found at index", result)
+else:
+    print("Element not found")`;
+        userCode = `def binary_search(arr, x):
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] < x:
+            low = mid + 1
+        elif arr[mid] > x:
+            high = mid - 1
+        else:
+            return mid
+    return -1`;
+      } else {
+        code = `public class BinarySearch {
+    public static int binarySearch(int[] arr, int x) {
+        int low = 0, high = arr.length - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] < x)
+                low = mid + 1;
+            else if (arr[mid] > x)
+                high = mid - 1;
+            else
+                return mid;
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        int[] array = {${arrayInput}};
+        int x = ${searchValue};
+        int result = binarySearch(array, x);
+        if (result != -1)
+            System.out.println("Element found at index " + result);
+        else
+            System.out.println("Element not found");
+    }
+}`;
+        userCode = `public class BinarySearch {
+    public static int binarySearch(int[] arr, int x) {
+        int low = 0, high = arr.length - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] < x)
+                low = mid + 1;
+            else if (arr[mid] > x)
+                high = mid - 1;
+            else
+                return mid;
+        }
+        return -1;
+    }`;
+      }
+
+      const resultIndex = binary_search(array, searchValue);
+      const resultMessage = resultIndex !== -1 ? `Element found at index ${resultIndex}` : `Element not found`;
+
+      document.getElementById('result').innerText = resultMessage;
+      document.getElementById('code').innerText = code + '\n\nUser Input:\n' + userCode;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naive String Matching Visualization</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr.matched-row {
+      background-color: #e6f7ff; /* Change the color for matched rows */
+    }
+    span.matched {
+      color: blue;
+      font-weight: bold;
+    }
+    #matchNotFound {
+      font-weight: bold;
+      color: red;
+    }
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+  }
+
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+
+  .navlist-right{
+      float:right;
+  }
+
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+
+  </style>
+</head>
+<body>
+  <div id="navlist">
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="naive_str.html">Naive String</a>
+</div>
+<br>
+<br>
+<br>
+<h2>Naive String Matching Visualization</h2>
+
+<button onclick="generateRandomString()">Generate Random String</button><br>
+<button onclick="getUserInput()">Enter User Input</button><br>
+
+<div id="randomStringOutput"></div>
+<div id="userInputOutput"></div>
+<div id="visualizationOutput"></div>
+<div id="matchNotFound"></div>
+
+<script>
+let randomString = '';
+let userInput = '';
+
+function generateRandomString() {
+  randomString = Array.from({ length: 20 }, () => String.fromCharCode(Math.floor(Math.random() * 26) + 97)).join('');
+  document.getElementById('randomStringOutput').innerHTML = 'Random String: ' + randomString;
+  clearVisualization();
+  clearUserInput();
+}
+
+function getUserInput() {
+  userInput = prompt('Enter a string for matching:');
+  document.getElementById('userInputOutput').innerHTML = 'User Input: ' + userInput;
+
+  visualizeStringMatching();
+}
+
+function visualizeStringMatching() {
+  const steps = [];
+  const matches = naiveStringMatch(randomString, userInput);
+  const visualizationOutput = document.getElementById('visualizationOutput');
+  const matchNotFoundOutput = document.getElementById('matchNotFound');
+
+  if (matches.length > 0) {
+    // Visualize matches
+    let visualization = '';
+    for (let i = 0; i < randomString.length; i++) {
+      const isMatched = matches.includes(i);
+      const character = randomString[i];
+      
+      if (isMatched) {
+        visualization += `<span class="matched">${character}</span>`;
+      } else {
+        visualization += character;
+      }
+
+      // Record steps
+      steps.push({
+        step: i + 1,
+        character,
+        matched: isMatched ? 'Yes' : 'No'
+      });
+    }
+
+    visualizationOutput.innerHTML = 'Visualization: ' + visualization;
+    matchNotFoundOutput.innerText = '';
+    // Display steps in a table
+    displayStepsTable(steps);
+  } else {
+    matchNotFoundOutput.innerHTML = '<h3>No Match Found</h3>';
+    visualizationOutput.innerHTML = '';
+    clearTable();
+  }
+}
+
+function naiveStringMatch(text, pattern) {
+  const matches = [];
+  const n = text.length;
+  const m = pattern.length;
+
+  for (let i = 0; i <= n - m; i++) {
+    let j;
+    for (j = 0; j < m; j++) {
+      if (text[i + j] !== pattern[j]) {
+        break;
+      }
+    }
+
+    if (j === m) {
+      // Record matches
+      for (let k = 0; k < m; k++) {
+        matches.push(i + k);
+      }
+    }
+  }
+
+  return matches;
+}
+
+function displayStepsTable(steps) {
+  clearTable();
+
+  const table = document.createElement('table');
+  table.innerHTML = `
+    <tr>
+      <th>Step</th>
+      <th>Character</th>
+      <th>Matched</th>
+    </tr>
+  `;
+
+  steps.forEach((step, index) => {
+    const row = table.insertRow();
+    row.insertCell(0).innerText = step.step;
+    const characterCell = row.insertCell(1);
+    
+    // Change the color of the matched characters in the inputted string
+    const matchedString = step.matched === 'Yes' ? `<span class="matched">${step.character}</span>` : step.character;
+    characterCell.innerHTML = matchedString;
+
+    row.insertCell(2).innerText = step.matched;
+
+    // Change the row color for the matched inputted string
+    if (step.matched === 'Yes') {
+      row.classList.add('matched-row');
+    }
+  });
+
+  document.getElementById('visualizationOutput').appendChild(table);
+}
+
+function clearTable() {
+  const visualizationOutput = document.getElementById('visualizationOutput');
+  const existingTable = visualizationOutput.querySelector('table');
+
+  if (existingTable) {
+    existingTable.remove();
+  }
+}
+
+function clearVisualization() {
+  const visualizationOutput = document.getElementById('visualizationOutput');
+  visualizationOutput.innerHTML = '';
+}
+
+function clearUserInput() {
+  document.getElementById('userInputOutput').innerHTML = 'User Input: ';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Merge Sort</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+        width: 800px;
+        padding: 20px;
+        margin: 0 auto; /* Set margin to auto to center the container horizontally */
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        align-items: center;
+      }
+      
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    #navlist {
+        background-color: #7592ab00;
+        width: 100%;
+        margin-top: 0;
+        overflow: hidden;
+        position: relative;
+    }
+    /* styling navlist anchor element */
+    #navlist a {
+        float:left;
+        display:block;
+        color: #262424;
+        text-align: center;
+        padding: 12px;
+        text-decoration:none;
+        font-size: 20px;
+    }
+    .navlist-right{
+        float:right;
+    }
+    #navlist a:hover {
+        background-color: rgba(110, 7, 123, 0.403);
+        color: black;
+    }
+  </style>
+</head>
+<body>
+    <div id="navlist" >
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="merge_sort.html">Merge Sort</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    
+  <div class="container">
+    <h2>Merge Sort</h2>
+    <label for="array">Enter Array (comma-separated):</label>
+    <input type="text" id="array" placeholder="e.g., 5, 2, 8, 1, 4">
+    <label for="order">Select Order:</label>
+    <select id="order">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+    <label for="language">Select Language:</label>
+    <input type="radio" id="python" name="language" value="python" checked>
+    <label for="python">Python</label>
+    <input type="radio" id="java" name="language" value="java">
+    <label for="java">Java</label>
+    <button onclick="sortArray()">Sort</button>
+    <h3>Sorted Array:</h3>
+    <p id="result"></p>
+    <h3>Code:</h3>
+    <pre id="code"></pre>
+  </div>
+  <script>
+    function mergeSort(arr) {
+      if (arr.length <= 1) {
+        return arr;
+      }
+
+      const middle = Math.floor(arr.length / 2);
+      const left = arr.slice(0, middle);
+      const right = arr.slice(middle);
+
+      return merge(mergeSort(left), mergeSort(right));
+    }
+
+    function merge(left, right) {
+      let result = [];
+      let leftIndex = 0;
+      let rightIndex = 0;
+
+      while (leftIndex < left.length && rightIndex < right.length) {
+        if (left[leftIndex] < right[rightIndex]) {
+          result.push(left[leftIndex]);
+          leftIndex++;
+        } else {
+          result.push(right[rightIndex]);
+          rightIndex++;
+        }
+      }
+
+      return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+    }
+
+    function sortArray() {
+      const arrayInput = document.getElementById('array').value;
+      const order = document.getElementById('order').value;
+      const language = document.querySelector('input[name="language"]:checked').value;
+      let array = arrayInput.split(',').map(Number);
+      let code = '';
+      let userCode = '';
+
+      if (order === 'asc') {
+        array = mergeSort(array);
+      } else {
+        array = mergeSort(array).reverse();
+      }
+
+      if (language === 'python') {
+        if (order === 'asc') {
+          code = `def merge_sort_asc(arr):
+    if len(arr) <= 1:
+        return arr
+    middle = len(arr) // 2
+    left = merge_sort_asc(arr[:middle])
+    right = merge_sort_asc(arr[middle:])
+    return merge_asc(left, right)
+
+def merge_asc(left, right):
+    result = []
+    left_index, right_index = 0, 0
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] < right[right_index]:
+            result.append(left[left_index])
+            left_index += 1
+        else:
+            result.append(right[right_index])
+            right_index += 1
+    result.extend(left[left_index:])
+    result.extend(right[right_index:])
+    return result
+
+# Example usage
+array = [${arrayInput}]
+print(merge_sort_asc(array.copy()))`;
+          userCode = `def merge_sort_asc(arr):
+    if len(arr) <= 1:
+        return arr
+    middle = len(arr) // 2
+    left = merge_sort_asc(arr[:middle])
+    right = merge_sort_asc(arr[middle:])
+    return merge_asc(left, right)
+
+def merge_asc(left, right):
+    result = []
+    left_index, right_index = 0, 0
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] < right[right_index]:
+            result.append(left[left_index])
+            left_index += 1
+        else:
+            result.append(right[right_index])
+            right_index += 1
+    result.extend(left[left_index:])
+    result.extend(right[right_index:])
+    return result`;
+        } else {
+          code = `def merge_sort_desc(arr):
+    if len(arr) <= 1:
+        return arr
+    middle = len(arr) // 2
+    left = merge_sort_desc(arr[:middle])
+    right = merge_sort_desc(arr[middle:])
+    return merge_desc(left, right)
+
+def merge_desc(left, right):
+    result = []
+    left_index, right_index = 0, 0
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] > right[right_index]:
+            result.append(left[left_index])
+            left_index += 1
+        else:
+            result.append(right[right_index])
+            right_index += 1
+    result.extend(left[left_index:])
+    result.extend(right[right_index:])
+    return result
+
+# Example usage
+array = [${arrayInput}]
+print(merge_sort_desc(array.copy()))`;
+          userCode = `def merge_sort_desc(arr):
+    if len(arr) <= 1:
+        return arr
+    middle = len(arr) // 2
+    left = merge_sort_desc(arr[:middle])
+    right = merge_sort_desc(arr[middle:])
+    return merge_desc(left, right)
+
+def merge_desc(left, right):
+    result = []
+    left_index, right_index = 0, 0
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] > right[right_index]:
+            result.append(left[left_index])
+            left_index += 1
+        else:
+            result.append(right[right_index])
+            right_index += 1
+    result.extend(left[left_index:])
+    result.extend(right[right_index:])
+    return result`;
+        }
+      } else {
+        if (order === 'asc') {
+          code = `public class MergeSort {
+    public static int[] mergeSortAsc(int[] arr) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+        int middle = arr.length / 2;
+        int[] left = new int[middle];
+        int[] right = new int[arr.length - middle];
+        for (int i = 0; i < middle; i++) {
+            left[i] = arr[i];
+        }
+        for (int i = middle; i < arr.length; i++) {
+            right[i - middle] = arr[i];
+        }
+        return mergeAsc(mergeSortAsc(left), mergeSortAsc(right));
+    }
+
+    public static int[] mergeAsc(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        int leftIndex = 0, rightIndex = 0, resultIndex = 0;
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] < right[rightIndex]) {
+                result[resultIndex++] = left[leftIndex++];
+            } else {
+                result[resultIndex++] = right[rightIndex++];
+            }
+        }
+        while (leftIndex < left.length) {
+            result[resultIndex++] = left[leftIndex++];
+        }
+        while (rightIndex < right.length) {
+            result[resultIndex++] = right[rightIndex++];
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] array = {${arrayInput}};
+        int[] sortedArray = mergeSortAsc(array);
+        for (int num : sortedArray) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}`;
+          userCode = `public class MergeSort {
+    public static int[] mergeSortAsc(int[] arr) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+        int middle = arr.length / 2;
+        int[] left = new int[middle];
+        int[] right = new int[arr.length - middle];
+        for (int i = 0; i < middle; i++) {
+            left[i] = arr[i];
+        }
+        for (int i = middle; i < arr.length; i++) {
+            right[i - middle] = arr[i];
+        }
+        return mergeAsc(mergeSortAsc(left), mergeSortAsc(right));
+    }
+
+    public static int[] mergeAsc(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        int leftIndex = 0, rightIndex = 0, resultIndex = 0;
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] < right[rightIndex]) {
+                result[resultIndex++] = left[leftIndex++];
+            } else {
+                result[resultIndex++] = right[rightIndex++];
+            }
+        }
+        while (leftIndex < left.length) {
+            result[resultIndex++] = left[leftIndex++];
+        }
+        while (rightIndex < right.length) {
+            result[resultIndex++] = right[rightIndex++];
+        }
+        return result;
+    }`;
+        } else {
+          code = `public class MergeSort {
+    public static int[] mergeSortDesc(int[] arr) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+        int middle = arr.length / 2;
+        int[] left = new int[middle];
+        int[] right = new int[arr.length - middle];
+        for (int i = 0; i < middle; i++) {
+            left[i] = arr[i];
+        }
+        for (int i = middle; i < arr.length; i++) {
+            right[i - middle] = arr[i];
+        }
+        return mergeDesc(mergeSortDesc(left), mergeSortDesc(right));
+    }
+
+    public static int[] mergeDesc(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        int leftIndex = 0, rightIndex = 0, resultIndex = 0;
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] > right[rightIndex]) {
+                result[resultIndex++] = left[leftIndex++];
+            } else {
+                result[resultIndex++] = right[rightIndex++];
+            }
+        }
+        while (leftIndex < left.length) {
+            result[resultIndex++] = left[leftIndex++];
+        }
+        while (rightIndex < right.length) {
+            result[resultIndex++] = right[rightIndex++];
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] array = {${arrayInput}};
+        int[] sortedArray = mergeSortDesc(array);
+        for (int num : sortedArray) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}`;
+          userCode = `public class MergeSort {
+    public static int[] mergeSortDesc(int[] arr) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+        int middle = arr.length / 2;
+        int[] left = new int[middle];
+        int[] right = new int[arr.length - middle];
+        for (int i = 0; i < middle; i++) {
+            left[i] = arr[i];
+        }
+        for (int i = middle; i < arr.length; i++) {
+            right[i - middle] = arr[i];
+        }
+        return mergeDesc(mergeSortDesc(left), mergeSortDesc(right));
+    }
+
+    public static int[] mergeDesc(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        int leftIndex = 0, rightIndex = 0, resultIndex = 0;
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] > right[rightIndex]) {
+                result[resultIndex++] = left[leftIndex++];
+            } else {
+                result[resultIndex++] = right[rightIndex++];
+            }
+        }
+        while (leftIndex < left.length) {
+            result[resultIndex++] = left[leftIndex++];
+        }
+        while (rightIndex < right.length) {
+            result[resultIndex++] = right[rightIndex++];
+        }
+        return result;
+    }`;
+        }
+      }
+
+      document.getElementById('result').innerText = array.join(', ');
+      document.getElementById('code').innerText = code + '\n\nUser Input:\n' + userCode;
+    }
+  </script>
+</body>
+</html>

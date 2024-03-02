@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sort Visualization - Insertion Sort</title>
+  <style>
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      width: 800px;
+      padding: 20px;
+      margin: 0 auto; /* Set margin to auto to center the container horizontally */
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      align-items: center;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: rgb(7, 10, 12);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2196F3;
+    }
+    .bars {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding-top: 80px;
+      padding-bottom: 100px;
+      margin-bottom: 20px; /* Add margin at the bottom */
+      transform: rotate(180deg);
+      margin: 0 auto; /* Center horizontally */
+      justify-content: center; /* Center bars horizontally */
+    }
+    
+    .bar {
+      width: 30px; /* Increased width of the bars */
+      margin-right: 2px;
+      background-color: rgb(0, 0, 0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative; /* Position relative for positioning the values */
+      transition: background-color 0.5s; /* Smooth color transition */
+      border: 1px solid #ccc; /* Add a border to visually distinguish bars */
+    }
+    .value-container {
+      position: absolute;
+      bottom: -20px; /* Position the value below the bar */
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+    .value {
+      font-size: 10px;
+      transform: rotate(180deg); /* Rotate the value */
+    }
+    h1{
+        text-align: center;
+    }
+    #sizeValue {
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+    }
+    #steps {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="insertion_sort.html">Insertion Sort</a>
+</div>
+  <div class="container">
+    <br><br><br><br>
+    <h1>Insertion Sort Visualization</h1>
+    <label for="size">Number of Inputs: <span id="sizeValue">5</span></label>
+    <input type="range" id="size" min="1" max="30" value="5" oninput="updateSizeValue()">
+    <label for="speed">Speed:</label>
+    <input type="range" id="speed" min="1" max="1000" value="500">
+    <label for="order">Sorting Order:</label>
+    <select id="order">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+    <button onclick="sort()">Sort</button>
+    <div class="bars" id="bars"></div>
+    <div id="steps"></div>
+  </div>
+
+  <script>
+    function createBars(array) {
+      return array.map((num, index) => `
+        <div class="bar" style="height:${num * 10}px;" data-key="${index}" data-value="${num}">
+          <div class="value-container">
+            <div class="value">${num}</div>
+          </div>
+        </div>`
+      ).reverse().join('');
+    }
+
+    async function sort() {
+      const size = document.getElementById('size').value;
+      const order = document.getElementById('order').value;
+      let numbers = Array.from({ length: size }, () => Math.floor(Math.random() * 20) + 1); // Generate random numbers
+      const barsDiv = document.getElementById('bars');
+      const stepsDiv = document.getElementById('steps');
+      barsDiv.innerHTML = createBars(numbers);
+      let steps = [];
+
+      for (let i = 1; i < numbers.length; i++) {
+        let key = numbers[i];
+        let j = i - 1;
+
+        while (j >= 0 && ((order === 'asc' && numbers[j] > key) || (order === 'desc' && numbers[j] < key))) {
+          numbers[j + 1] = numbers[j];
+          j = j - 1;
+          steps.push({ action: 'Shift', from: j + 1, to: j + 2 });
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+
+        numbers[j + 1] = key;
+        steps.push({ action: 'Insert', value: key, index: j + 1 });
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+
+      // Display all steps
+      let stepsHTML = '';
+      steps.forEach((step, index) => {
+        if (step.action === 'Shift') {
+          stepsHTML += `Step ${index + 1}: Shifted ${numbers[step.from]} to the right<br>`;
+        } else if (step.action === 'Insert') {
+          stepsHTML += `Step ${index + 1}: Inserted ${step.value} at index ${step.index}<br>`;
+        }
+      });
+      stepsDiv.innerHTML = stepsHTML;
+    }
+
+    function updateSizeValue() {
+      const size = document.getElementById('size').value;
+      document.getElementById('sizeValue').textContent = size;
+    }
+  </script>
+</body>
+</html>

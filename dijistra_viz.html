@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <title>Dijkstra's Algorithm Visualization</title>
+</head>
+<body>
+  <div id="navlist">
+    <a href="index.html">Algorithm Visualizer</a>
+    <a href="dijistra_s.html">Dijistra Algorithm</a>
+</div>
+  <script>
+    // Define graph variables
+    let numVertices;
+    let adjacencyMatrix;
+    let startVertex;
+    let distances;
+    let visited;
+    let path;
+
+    // Define variables for visualization
+    let canvasWidth = 800;
+    let canvasHeight = 600;
+    let vertexRadius = 20;
+    let vertexPositions = [];
+    let highlightEdges = [];
+    let interval = 2000; // Interval between highlighting edges in milliseconds
+
+    function setup() {
+      createCanvas(canvasWidth, canvasHeight);
+      numVertices = parseInt(prompt("Enter the number of vertices:"));
+      adjacencyMatrix = new Array(numVertices).fill(null).map(() => new Array(numVertices).fill(0));
+      distances = new Array(numVertices).fill(Infinity);
+      visited = new Array(numVertices).fill(false);
+      path = new Array(numVertices).fill(null);
+
+      // Initialize adjacency matrix
+      for (let i = 0; i < numVertices; i++) {
+        for (let j = i + 1; j < numVertices; j++) {
+          let distance = parseInt(prompt(`Enter distance between vertex ${i+1} and vertex ${j+1}:`));
+          if (distance < 0) {
+            alert("Distance cannot be negative.");
+            return;
+          }
+          adjacencyMatrix[i][j] = distance;
+          adjacencyMatrix[j][i] = distance; // Add edge in both directions
+        }
+      }
+
+      startVertex = parseInt(prompt("Enter the starting vertex (1 to " + numVertices + "):")) - 1;
+      if (startVertex < 0 || startVertex >= numVertices) {
+        alert("Invalid starting vertex.");
+        return;
+      }
+
+      // Initialize vertex positions for visualization
+      for (let i = 0; i < numVertices; i++) {
+        let angle = i * TWO_PI / numVertices;
+        let x = canvasWidth / 2 + 200 * cos(angle);
+        let y = canvasHeight / 2 + 200 * sin(angle);
+        vertexPositions.push(createVector(x, y));
+      }
+
+      // Run Dijkstra's algorithm
+      dijkstra(startVertex);
+    }
+
+    function draw() {
+      background(255);
+
+      // Draw vertices
+      fill(0);
+      for (let i = 0; i < numVertices; i++) {
+        ellipse(vertexPositions[i].x, vertexPositions[i].y, vertexRadius * 2);
+        textAlign(CENTER, CENTER);
+        text(i + 1, vertexPositions[i].x, vertexPositions[i].y);
+      }
+
+      // Draw edges
+      stroke(0);
+      for (let i = 0; i < numVertices; i++) {
+        for (let j = i + 1; j < numVertices; j++) {
+          if (adjacencyMatrix[i][j] > 0) {
+            if (highlightEdges.includes(i * numVertices + j) || highlightEdges.includes(j * numVertices + i)) {
+              strokeWeight(3);
+              stroke(255, 0, 0); // Highlighted edge color
+            } else {
+              strokeWeight(1);
+              stroke(0);
+            }
+            line(vertexPositions[i].x, vertexPositions[i].y, vertexPositions[j].x, vertexPositions[j].y);
+            noStroke();
+            fill(0);
+            textAlign(CENTER, BOTTOM);
+            text(adjacencyMatrix[i][j], (vertexPositions[i].x + vertexPositions[j].x) / 2, (vertexPositions[i].y + vertexPositions[j].y) / 2);
+          }
+        }
+      }
+
+      // Display shortest path
+      fill(255, 0, 0); // Shortest path color
+      textAlign(CENTER, BOTTOM);
+      for (let i = 0; i < numVertices; i++) {
+        if (i !== startVertex) {
+          let pathVertices = [];
+          let currentVertex = i;
+          while (path[currentVertex] !== null) {
+            pathVertices.push(currentVertex);
+            currentVertex = path[currentVertex];
+          }
+          pathVertices.push(startVertex);
+          pathVertices.reverse();
+          let pathLength = distances[i] === Infinity ? "∞" : distances[i];
+          text("Shortest Path to " + (i + 1) + ": " + pathVertices.map(v => v + 1).join(" -> ") + " (Length: " + pathLength + ")", width / 2, height - 20 * (numVertices - i));
+        }
+      }
+    }
+
+    function dijkstra(start) {
+      distances[start] = 0;
+      for (let i = 0; i < numVertices - 1; i++) {
+        let u = minDistance();
+        visited[u] = true;
+        for (let v = 0; v < numVertices; v++) {
+          if (!visited[v] && adjacencyMatrix[u][v] > 0 && distances[u] !== Infinity && distances[u] + adjacencyMatrix[u][v] < distances[v]) {
+            distances[v] = distances[u] + adjacencyMatrix[u][v];
+            path[v] = u;
+            highlightEdges.push(u * numVertices + v);
+            highlightEdges.push(v * numVertices + u);
+            setTimeout(() => {
+              highlightEdges.pop();
+              highlightEdges.pop();
+            }, interval * (highlightEdges.length - 2));
+          }
+        }
+      }
+    }
+
+    function minDistance() {
+      let min = Infinity;
+      let minIndex = -1;
+      for (let v = 0; v < numVertices; v++) {
+        if (!visited[v] && distances[v] <= min) {
+          min = distances[v];
+          minIndex = v;
+        }
+      }
+      return minIndex;
+    }
+  </script>
+</body>
+</html>

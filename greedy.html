@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Greedy Approach</title>
+    <style>
+        #navlist {
+            background-color: #00147700;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float: left;
+            display: block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .navlist-right {
+            float: right;
+        }
+
+        #navlist a:hover {
+            background-color: rgb(190, 228, 173);
+            color: black;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #addd82;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #0d117e;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+            animation: buttonAnimation 1s infinite alternate;
+        }
+
+        .button:hover {
+            background-color: #ba2727;
+            animation-play-state: paused;
+        }
+
+        @keyframes buttonAnimation {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+    </div>
+    <br><br><br><br><br><br>
+    <h1>Greedy Approach</h1>
+    <div class="button-container">
+        <a href="knap_prb.html" class="button">Knapsack Problem</a>
+        <a href="dijkstra_s.html" class="button">Dijkstra's Algorithm</a>
+        <a href="job_sequencing.html" class="button">Job Sequencing</a>
+    </div>
+</body>
+</html>

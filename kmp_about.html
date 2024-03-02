@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Knuth-Morris-Pratt</title>
+        <style>
+            body{
+                background-color: rgb(149, 229, 234);
+            }
+            #navlist {
+                background-color: #7592ab00;
+                position: absolute;
+                width: 100%;
+                margin-top: -10px;
+                
+            }
+            /* styling navlist anchor element */
+            #navlist a {
+                float:left;
+                display:block;
+                color: #262424;
+                text-align: center;
+                padding: 12px;
+                text-decoration:none;
+                font-size: 20px;
+            }
+            .navlist-right{
+                float:right;
+            }
+            #navlist a:hover {
+                background-color: rgba(230, 88, 192, 0.401);
+                color: black;
+            }
+            .about_us {
+                padding: 50px;
+                text-align: center;
+                color:black;
+                padding-left: 300px;
+                padding-right: 300px;
+                font-size: 23px;
+                text-align: justify;
+              }
+        </style>
+    </head>
+    <body>
+        <div id="navlist" >
+            <a href="index.html">Algorithm Visualizer</a>
+            <a href="index.html">Knuth-Morris-Pratt</a>
+        </div>
+        <div class="about_us">
+            <p>
+                The Knuth-Morris-Pratt (KMP) algorithm is used for pattern matching in strings. It improves on the brute-force approach by avoiding unnecessary character comparisons. It achieves this by precomputing a prefix function that helps determine the maximum length of the proper suffix of the substring that is also a prefix of the pattern. This information allows the algorithm to shift the pattern more intelligently, avoiding comparisons that were already matched in the previous iterations. This results in a linear time complexity of O(n + m), where n is the length of the text and m is the length of the pattern, making it efficient for large text searches.
+            </p>
+        </div>
+    </body>
+</html>
+           

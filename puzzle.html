@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15 Puzzle Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        code {
+            display: none;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        code.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>15 Puzzle Solver</h2>
+    <button onclick="showCode('python')">Show Python Code</button>
+    <button onclick="showCode('java')">Show Java Code</button>
+    <code id="pythonCode" class="active">
+        <!-- Python code will be displayed here -->
+    </code>
+    <code id="javaCode">
+        <!-- Java code will be displayed here -->
+    </code>
+</div>
+
+<script>
+    function showCode(language) {
+        var pythonCode = document.getElementById("pythonCode");
+        var javaCode = document.getElementById("javaCode");
+
+        if (language === 'python') {
+            pythonCode.classList.add('active');
+            javaCode.classList.remove('active');
+        } else if (language === 'java') {
+            pythonCode.classList.remove('active');
+            javaCode.classList.add('active');
+        }
+    }
+</script>
+
+<script>
+    // Python code
+    document.getElementById("pythonCode").innerText = `import copy
+from queue import PriorityQueue
+import time
+
+class PuzzleState:
+    def _init_(self, board, goal, moves=0):
+        self.board = board
+        self.goal = goal
+        self.moves = moves
+    
+    def _eq_(self, other):
+        return self.board == other.board
+    
+    def _lt_(self, other):
+        return (self.moves + self.heuristic()) < (other.moves + other.heuristic())
+    
+    def _str_(self):
+        return '\\n'.join([' '.join([str(cell) for cell in row]) for row in self.board])
+    
+    def find_blank(self):
+        for i in range(4):
+            for j in range(4):
+                if self.board[i][j] == 0:
+                    return i, j
+    
+    def heuristic(self):
+        return sum([1 if self.board[i][j] != self.goal[i][j] else 0 for i in range(4) for j in range(4)])
+    
+    def move(self, dx, dy):
+        x, y = self.find_blank()
+        new_board = copy.deepcopy(self.board)
+        new_board[x][y], new_board[x+dx][y+dy] = new_board[x+dx][y+dy], new_board[x][y]
+        return PuzzleState(new_board, self.goal, self.moves+1)
+
+def solve(initial_board, goal_board):
+    start_time = time.time()
+    initial_state = PuzzleState(initial_board, goal_board)
+    frontier = PriorityQueue()
+    frontier.put(initial_state)
+    visited = set()
+    
+    while not frontier.empty():
+        current_state = frontier.get()
+        visited.add(str(current_state.board))
+        
+        if current_state.board == goal_board:
+            end_time = time.time()
+            print("Solution found in {:.4f} seconds.".format(end_time - start_time))
+            return current_state.moves
+        
+        for d in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            new_state = current_state.move(*d)
+            if str(new_state.board) not in visited:
+                frontier.put(new_state)
+    
+    return "No solution found."
+
+# Example usage:
+initial_board = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 0, 15]]
+goal_board = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]]
+print("Number of moves to solve:", solve(initial_board, goal_board))`;
+</script>
+
+<script>
+    // Java code
+    document.getElementById("javaCode").innerText = `import java.util.*;
+
+class PuzzleState implements Comparable<PuzzleState> {
+    private int[][] board;
+    private int[][] goal;
+    private int moves;
+    
+    public PuzzleState(int[][] board, int[][] goal, int moves) {
+        this.board = board;
+        this.goal = goal;
+        this.moves = moves;
+    }
+    
+    public boolean equals(Object obj) {
+        PuzzleState other = (PuzzleState)obj;
+        return Arrays.deepEquals(this.board, other.board);
+    }
+    
+    public int compareTo(PuzzleState other) {
+        return (this.moves + this.heuristic()) - (other.moves + other.heuristic());
+    }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : board) {
+            for (int cell : row) {
+                sb.append(cell).append(" ");
+            }
+            sb.append("\\n");
+        }
+        return sb.toString();
+    }
+    
+    public int findBlank() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (board[i][j] == 0) {
+                    return i * 4 + j;
+                }
+            }
+        }
+        return -1;
+    }
+    
+    public int heuristic() {
+        int h = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (board[i][j] != goal[i][j]) {
+                    h++;
+                }
+            }
+        }
+        return h;
+    }
+    
+    public PuzzleState move(int dx, int dy) {
+        int blankIndex = findBlank();
+        int x = blankIndex / 4;
+        int y = blankIndex % 4;
+        int[][] newBoard = Arrays.stream(board).map(int[]::clone).toArray(int[][]::new);
+        newBoard[x][y] = newBoard[x + dx][y + dy];
+        newBoard[x + dx][y + dy] = 0;
+        return new PuzzleState(newBoard, goal, moves + 1);
+    }
+}
+
+public class FifteenPuzzle {
+    public static int solve(int[][] initialBoard, int[][] goalBoard) {
+        long startTime = System.nanoTime();
+        PuzzleState initialState = new PuzzleState(initialBoard, goalBoard, 0);
+        PriorityQueue<PuzzleState> frontier = new PriorityQueue<>();
+        frontier.add(initialState);
+        Set<String> visited = new HashSet<>();
+        
+        while (!frontier.isEmpty()) {
+            PuzzleState currentState = frontier.poll();
+            visited.add(Arrays.deepToString(currentState.board));
+            
+            if (Arrays.deepEquals(currentState.board, goalBoard)) {
+                long endTime = System.nanoTime();
+                double elapsedTime = (endTime - startTime) / 1e9;
+                System.out.printf("Solution found in %.4f seconds.%n", elapsedTime);
+                return currentState.moves;
+            }
+            
+            int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+            for (int[] d : directions) {
+                PuzzleState newState = currentState.move(d[0], d[1]);
+                if (!visited.contains(Arrays.deepToString(newState.board))) {
+                    frontier.add(newState);
+                }
+            }
+        }
+        
+        return -1;
+    }
+    
+    public static void main(String[] args) {
+        int[][] initialBoard = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 0, 15}};
+        int[][] goalBoard = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
+        System.out.println("Number of moves to solve: " + solve(initialBoard, goalBoard));
+    }
+}`;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Selection Sort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(82, 71, 239, 0.262);
+            color: black;
+        }
+
+        .about_us {
+            padding: 50px;
+            text-align: center;
+            color:black;
+            padding-left: 300px;
+            padding-right: 300px;
+            font-size: 23px;
+            text-align: justify;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto; /* Center the image */
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="selection_sort.html">Selection Sort</a>
+    </div>
+    <br>
+    <br>
+    <div class="about_us">
+        <p>
+            Selection Sort is a straightforward sorting algorithm that works by repeatedly selecting the minimum element from an unsorted part of the array and placing it at the beginning. The process continues until the entire array is sorted. Although simple to understand and implement, Selection Sort has a time complexity of O(n^2), making it less efficient for large datasets compared to more advanced sorting algorithms like Merge Sort or QuickSort. Despite its inefficiency, Selection Sort serves as a fundamental concept in computer science education and provides insight into the principles of sorting algorithms.
+        </p>
+    </div>
+    <img src="selection.jpg">
+</body>
+</html>

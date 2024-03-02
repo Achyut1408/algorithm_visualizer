@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sorting Algorithms</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        #navlist {
+            background-color: #e2dfe500;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float: left;
+            display: block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .navlist-right {
+            float: right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(89, 81, 182, 0.167);
+            color: rgb(52, 80, 180);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #64a2e8ac;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #0d117e;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+            animation: buttonAnimation 1s infinite alternate;
+        }
+
+        .button:hover {
+            background-color: #14051caf;
+            animation-play-state: paused;
+        }
+
+        @keyframes buttonAnimation {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+    </div>
+    <br><br><br><br><br><br>
+    <h1>Sorting Techniques</h1>
+    <div class="button-container">
+        <a href="insertion_sort.html" class="button">Insertion Sort</a>
+        <a href="selection_sort.html" class="button">Selection Sort</a>
+        <a href="bubble_sort.html" class="button">Bubble Sort</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Knapsack Problem</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      width: 800px;
+      padding: 20px;
+      margin-left: 300px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center; /* Center align the content */
+    }
+    h1 {
+      margin-bottom: 20px; /* Add margin below the heading */
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 5px; /* Add margin to the buttons */
+      background-color: rgb(1, 1, 1);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover {
+      background-color: #2196F3;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: left; /* Align text to left within output div */
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <div class="container">
+    <h1>Knapsack Problem</h1>
+    <button id="aboutBtn" onclick="about()">About</button>
+    <button id="outputBtn" onclick="code()">Code Output</button>
+    <button id="visualizeBtn" onclick="abc()">Visualization</button>
+    <div class="output" id="output"></div>
+  </div>
+  <script>
+    function about(){
+      window.location.href='knap_about.html';
+    }
+    function code(){
+        window.location.href='knap.html';
+    }
+    function abc(){
+        window.location.href='knap_viz.html';
+    }
+  </script>
+</body>
+</html>

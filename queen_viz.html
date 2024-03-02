@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #navlist {
+        background-color: #7592ab00;
+        position: absolute;
+        width: 100%;
+        margin-top: -10px;
+    }
+
+    /* styling navlist anchor element */
+    #navlist a {
+        float:left;
+        display:block;
+        color: #262424;
+        text-align: center;
+        padding: 12px;
+        text-decoration:none;
+        font-size: 20px;
+    }
+
+    .navlist-right{
+        float:right;
+    }
+
+    #navlist a:hover {
+        background-color: rgba(113, 30, 230, 0.262);
+        color: black;
+    }
+    body {
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+        width: 800px;
+        padding: 20px;
+        margin: 0 auto; /* Set margin to auto to center the container horizontally */
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        align-items: center;
+      }
+      
+    .board {
+      display: grid;
+      width: 320px;
+      height: 320px;
+      border: 2px solid black;
+      margin-bottom: 10px;
+    }
+    .square {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #eee;
+      border: 1px solid black;
+    }
+    .queen {
+      font-size: 24px;
+    }
+    .input-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    #speed {
+      width: 150px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="naive_str.html">N Queen Problem</a>
+    </div>
+    <br><br><br><br><br>
+<div class="container">
+  <div class="input-container">
+    <label for="size">Enter number of rows and columns:</label>
+    <input type="number" id="size" name="size" min="4" max="10" value="4">
+    <input type="range" id="speed" name="speed" min="1" max="10" value="5">
+  </div>
+  <button onclick="solveNQueens()">Solve</button>
+
+  <div id="board" class="board"></div>
+  <div id="steps"></div>
+</div>
+
+<script>
+  async function createBoard(size) {
+    const boardElement = document.getElementById("board");
+    boardElement.innerHTML = "";
+    boardElement.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    boardElement.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        const square = document.createElement("div");
+        square.className = "square";
+        boardElement.appendChild(square);
+      }
+    }
+    await sleep(500);
+  }
+
+  async function isSafe(board, row, col) {
+    const size = board.length;
+    for (let i = 0; i < col; i++) {
+      if (board[row][i] === 1) return false;
+    }
+    
+    for (let i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+      if (board[i][j] === 1) return false;
+    }
+    
+    for (let i = row, j = col; i < size && j >= 0; i++, j--) {
+      if (board[i][j] === 1) return false;
+    }
+    
+    return true;
+  }
+
+  async function solveNQueensUtil(board, col, steps, speed) {
+    const size = board.length;
+    if (col >= size) return true;
+
+    for (let i = 0; i < size; i++) {
+      if (await isSafe(board, i, col)) {
+        board[i][col] = 1;
+        steps.push(`Step ${steps.length + 1}: Queen ${col + 1} is at row ${i + 1} and column ${col + 1}`);
+        drawBoard(board, steps);
+        await sleep(1000 / speed);
+        
+        if (await solveNQueensUtil(board, col + 1, steps, speed)) return true;
+
+        board[i][col] = 0;
+        steps.push(`Step ${steps.length + 1}: Queen ${col + 1} moves from row ${i + 1} and column ${col + 1} to another position`);
+        drawBoard(board, steps);
+        await sleep(1000 / speed);
+      }
+    }
+    return false;
+  }
+
+  async function solveNQueens() {
+    const size = parseInt(document.getElementById("size").value);
+    if (isNaN(size)) {
+      alert("Please enter a valid number.");
+      return;
+    }
+    if (size < 4 || size > 10) {
+      alert("Number of rows and columns must be between 4 and 10.");
+      return;
+    }
+
+    await createBoard(size);
+    
+    let board = new Array(size);
+    for (let i = 0; i < size; i++) {
+      board[i] = new Array(size).fill(0);
+    }
+    
+    let steps = [];
+    const speed = parseInt(document.getElementById("speed").value);
+
+    if (!await solveNQueensUtil(board, 0, steps, speed)) {
+      console.log("Solution does not exist");
+      return false;
+    }
+
+    return true;
+  }
+
+  function drawBoard(board, steps) {
+    const boardElement = document.getElementById("board");
+    const size = Math.sqrt(boardElement.childElementCount);
+    let index = 0;
+
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        const square = boardElement.children[index++];
+        square.innerHTML = "";
+        square.innerHTML = (board[i][j] === 1) ? "<span class='queen'>♛</span>" : "";
+      }
+    }
+
+    const stepsElement = document.getElementById("steps");
+    stepsElement.innerHTML = "";
+    for (let step of steps) {
+      const stepElement = document.createElement("div");
+      stepElement.textContent = step;
+      stepsElement.appendChild(stepElement);
+    }
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+</script>
+
+</body>
+</html>

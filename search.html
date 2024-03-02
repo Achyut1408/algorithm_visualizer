@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Algorithms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #6a8489a4;
+            margin: 0;
+            padding: 0;
+            align-content: center;
+            height: 100vh;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 22px;
+            color: #fff;
+            background-color: #258a798f;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+            margin-left: 50px; /* Reduced margin */
+            margin-right: 50px; /* Reduced margin */
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .linear-search {
+            animation: linearSearch 1s infinite alternate;
+        }
+
+        .binary-search {
+            animation: binarySearch 1s infinite alternate;
+        }
+
+        @keyframes linearSearch {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        @keyframes binarySearch {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+        h1{
+            text-align: center;
+        }
+        #navlist {
+            background-color: #00147700;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+            
+        }
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+        .navlist-right{
+            float:right;
+        }
+        #navlist a:hover {
+            background-color: rgba(82, 71, 239, 0.262);
+            color: black;
+        }
+        .a{
+            text-align: center; /* Align content to center */
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist" >
+        <a href="index.html">Algorithm Visualizer</a>
+    </div>
+    <br><br><br><br><br><br>
+    <h1>Searching Techniques</h1>
+    <br>
+    <br>
+    <div class="a">
+    <a href="linear_search.html" class="button linear-search">Linear Search</a>
+    <a href="binary_search.html" class="button binary-search">Binary Search</a>
+</div>
+</body>
+</html>

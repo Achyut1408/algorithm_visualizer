@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Puzzle problem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #9ceee6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+
+        .navlist-right{
+            float:right;
+        }
+
+        #navlist a:hover {
+            background-color: rgba(113, 30, 230, 0.262);
+            color: black;
+        }
+
+        .about_us {
+            padding: 50px;
+            text-align: center;
+            color:black;
+            padding-left: 300px;
+            padding-right: 300px;
+            font-size: 23px;
+            text-align: justify;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto; /* Center the image */
+            max-width: 100%;
+            height: auto;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="naive_str.html">15 Puzzle Problem</a>
+    </div>
+    <div class="about_us">
+        <p>
+            The 15 puzzle algorithm aims to solve the sliding puzzle by systematically rearranging the numbered tiles into their correct order within a 4x4 grid, with one empty space for movement. Typically employing search techniques like breadth-first search or A*, the algorithm starts by generating possible moves from the current configuration and evaluating each move based on metrics like misplaced tiles or Manhattan distance. It then chooses the most promising move and repeats this process until the goal state is reached, backtracking when necessary. Efficiency can be enhanced through memoization and pruning techniques, making the algorithm effective in solving the puzzle.
+        </p>
+    </div>
+    <img src="puzzle.jpg">
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Binary Search Visualization</title>
+  <style>
+    #navlist {
+      background-color: #7592ab00;
+      position: absolute;
+      width: 100%;
+      margin-top: -10px;
+      
+  }
+  /* styling navlist anchor element */
+  #navlist a {
+      float:left;
+      display:block;
+      color: #262424;
+      text-align: center;
+      padding: 12px;
+      text-decoration:none;
+      font-size: 20px;
+  }
+  .navlist-right{
+      float:right;
+  }
+  #navlist a:hover {
+      background-color: rgba(82, 71, 239, 0.262);
+      color: black;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e1e5e6;
+    }
+    .container {
+      width: 800px;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-left: 300px;
+      text-align: center; /* Center align the content */
+      
+    }
+    h1 {
+      margin-bottom: 20px; /* Add margin below the heading */
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 5px; /* Add margin to the buttons */
+      background-color: rgb(0, 0, 0);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover {
+      background-color: #2196F3;
+    }
+    .outputBtn {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: left; /* Align text to left within output div */
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div id="navlist" >
+    <a href="index.html">Algorithm Visualizer</a>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <div class="container">
+    <h1>Binary Search Algorithm</h1>
+    <br>
+    <button id="aboutBtn" onclick="about()">About</button>
+    <button id="outputBtn" onclick="code()">Code\Output</button>
+    <button id="visualizeBtn" onclick="abc()">Visualization</button>
+    <div class="output" id="output"></div>
+  </div>
+  <script>
+    function about(){
+      window.location.href='binary_about.html';
+    }
+    function code(){
+        window.location.href='binary.html';
+    }
+    function abc(){
+        window.location.href='binary_viz.html';
+    }
+  </script>
+</body>
+</html>

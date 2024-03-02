@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-Queens</title>
+    <style>
+        /* CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #code {
+            white-space: pre-wrap;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            text-align: left;
+        }
+        #a{
+            padding-left: 200px;
+        }
+        #navlist {
+            background-color: #7592ab00;
+            position: absolute;
+            width: 100%;
+            margin-top: -10px;
+        }
+    
+        /* styling navlist anchor element */
+        #navlist a {
+            float:left;
+            display:block;
+            color: #262424;
+            text-align: center;
+            padding: 12px;
+            text-decoration:none;
+            font-size: 20px;
+        }
+    
+        .navlist-right{
+            float:right;
+        }
+    
+        #navlist a:hover {
+            background-color: rgba(113, 30, 230, 0.262);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="navlist">
+        <a href="index.html">Algorithm Visualizer</a>
+        <a href="naive_str.html">Queeen Problem</a>
+    </div>
+    <br><br><br><br><br>
+    <div class="a">
+    <h1>N-Queens Problem</h1>
+    <label for="language">Choose a language:</label>
+    <select id="language">
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+    </select>
+    <button onclick="displayCode()">Show Code</button>
+    <pre id="code"></pre>
+    </div>
+
+    <script>
+        function displayCode() {
+            var language = document.getElementById("language").value;
+            var pythonCode = `class NQueens:
+    def _init_(self, n):
+        self.n = n
+        self.board = [-1] * n
+
+    def is_safe(self, row, col):
+        for prev_row in range(row):
+            if (
+                self.board[prev_row] == col
+                or self.board[prev_row] - prev_row == col - row
+                or self.board[prev_row] + prev_row == col + row
+            ):
+                return False
+        return True
+
+    def solve_nqueens(self, row):
+        if row == self.n:
+            return True
+        for col in range(self.n):
+            if self.is_safe(row, col):
+                self.board[row] = col
+                if self.solve_nqueens(row + 1):
+                    return True
+                self.board[row] = -1
+        return False
+
+    def print_solution(self):
+        for row in range(self.n):
+            line = ""
+            for col in range(self.n):
+                if self.board[row] == col:
+                    line += "Q "
+                else:
+                    line += ". "
+            print(line)
+
+
+# Input number of queens
+n = int(input("Enter the number of queens: "))
+if n <= 3:
+    print("No solution exists for n less than 4.")
+else:
+    queens = NQueens(n)
+    if queens.solve_nqueens(0):
+        print("Solution exists:")
+        queens.print_solution()
+    else:
+        print("No solution exists for this configuration.")`;
+
+            var javaCode = `public class NQueens {
+    private int n;
+    private int[] board;
+
+    public NQueens(int n) {
+        this.n = n;
+        this.board = new int[n];
+    }
+
+    public boolean isSafe(int row, int col) {
+        for (int prevRow = 0; prevRow < row; prevRow++) {
+            if (board[prevRow] == col || board[prevRow] - prevRow == col - row || board[prevRow] + prevRow == col + row) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean solveNQueens(int row) {
+        if (row == n) {
+            return true;
+        }
+        for (int col = 0; col < n; col++) {
+            if (isSafe(row, col)) {
+                board[row] = col;
+                if (solveNQueens(row + 1)) {
+                    return true;
+                }
+                board[row] = -1;
+            }
+        }
+        return false;
+    }
+
+    public void printSolution() {
+        for (int row = 0; row < n; row++) {
+            StringBuilder line = new StringBuilder();
+            for (int col = 0; col < n; col++) {
+                if (board[row] == col) {
+                    line.append("Q ");
+                } else {
+                    line.append(". ");
+                }
+            }
+            System.out.println(line);
+        }
+    }
+
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        if (n <= 3) {
+            System.out.println("No solution exists for n less than 4.");
+        } else {
+            NQueens queens = new NQueens(n);
+            if (queens.solveNQueens(0)) {
+                System.out.println("Solution exists:");
+                queens.printSolution();
+            } else {
+                System.out.println("No solution exists for this configuration.");
+            }
+        }
+    }
+}`;
+
+            var code = language === "python" ? pythonCode : javaCode;
+            document.getElementById("code").innerText = code;
+        }
+    </script>
+</body>
+</html>
